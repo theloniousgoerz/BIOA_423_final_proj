@@ -18,7 +18,7 @@ data <- read_csv("./data/bio_a_data_52621.csv")
 ```{r}
 # Data cleaning 
 # Rename the columns in the data set. ==========================================================
-data_ clean <- data %>% dplyr :: select(
+data_clean <- data %>% dplyr :: select(
   # Rename the variables for clean analysis. 
   # Dummy for whether the person is a grad or undergrad 
   student = `Are you a current undergraduate or graduate college student?`,
@@ -46,7 +46,7 @@ data_ clean <- data %>% dplyr :: select(
   # N drinks per week. 
   n_drinks_week = `On a regular basis, how many drinks per week do you have? (Please provide the number e.g. 1,2,3)`,
   # Sexual activity of friend group. 
-  n_sex_active_friend = `Now, thinking about your friend group, how many of your friends are sexually active?`,
+  sex_active_friend = `Now, thinking about your friend group, how many of your friends are sexually active?`,
   # What safe sex practices do your friends use. 
   friend_safe_sex = `How many of your friends to the best of your knowledge would you say engage in safe sex practices, eg. using condoms, dental dams, IUD/Birth control, or getting tested for STDs/STIs?`,
   # Share of friends who do not engage in safe sex practices. 
@@ -57,13 +57,145 @@ data_ clean <- data %>% dplyr :: select(
   resp_contr_type = `Please describe the protection that you use:`
 )
 
+# Filter out people who are not active and are not a student. 
+data_clean <- data_clean %>% filter(sex_active != "No" &
+                        student != "No")
+# Fix variable types 
+data_clean <- data_clean %>% 
+  mutate(n_close_friends = 
+           # Make numeric. 
+           as.numeric(n_close_friends), 
+         # Fix one level issue on the resp contr type
+         resp_contr_type = 
+           # Map NA value to no protection. 
+           plyr :: mapvalues(resp_contr_type, from = NA, to = "No protection at all"))
+
+```
+
+```{r Response issues with none var in friends questions (if needed), eval = F}
 # Clean the variable level names. ==================================
+# Look at data. 
 
+# Use if needed with response issues. 
 
+data_clean <- data_clean %>% 
+  # Issue with the number of sexually active friends. No option for no friends are sexually active.
+  # To fix this I recode NA = none of them, and eliminate responses for other questions that are clearly NA. 
+  mutate(sex_active_friend = 
+           # Fix levels for NA => recoding NA to none of them. 
+           plyr :: mapvalues(sex_active_friend,from = c(NA), 
+                             to = ("None of them")),
+          # Repeat the procedure with friend safe and non-safe sex. 
+         friend_safe_sex = 
+           plyr :: mapvalues(friend_safe_sex, from = c(NA), 
+                                             to = c("None of them")),
+         friend_non_safe_sex = 
+           plyr :: mapvalues(friend_non_safe_sex, 
+                                                 from = NA, 
+                             to = "None of them")
+         )
 
+```
 
+```{r}
+# Look at the cleaned data. 
+data_clean
 
 # When survey is done, save a file with the final raw data and then save a clean file from this file. ================
  # For later. 
+```
+
+```{r}
+# Look at visual descriptives 
+# Living situation. 
+ggplot(data = data_clean, aes(x = living_situation)) + 
+  geom_bar()
+
+# Gender. 
+ggplot(data = data_clean, aes(x = gender)) + 
+  geom_bar()
+
+# Race. 
+ggplot(data = data_clean, aes(x = race)) + 
+  geom_bar()
+
+# Hispanic.
+ggplot(data = data_clean, aes(x = hispanic)) + 
+  geom_bar()
+
+# Year born. 
+ggplot(data = data_clean, aes(x = year_born)) + 
+  geom_histogram()
+
+# Close friends. 
+ggplot(data = data_clean, aes(x = n_close_friends)) + 
+  geom_histogram(stat = "count", 
+                 binwidth = 1)
+
+# Friend covid safe. 
+ggplot(data = data_clean, aes(x = friend_covid_safe)) + 
+  geom_bar()
+
+# Resp covid safe. 
+ggplot(data = data_clean, aes(resp_covid_safe)) + 
+  geom_bar()
+
+# relationship status. 
+ggplot(data = data_clean, aes(rel_status)) + 
+  geom_bar()
+
+# N regular sex partners. 
+ggplot(data = data_clean, aes(n_reg_sex_part)) + 
+  geom_histogram()
+
+# number of drinks a week. 
+ggplot(data = data_clean, aes(n_drinks_week)) + 
+  geom_histogram()
+
+# Sex active friends 
+ggplot(data = data_clean, aes(sex_active_friend)) + 
+  geom_bar()
+
+# Friend safe sex. 
+ggplot(data = data_clean, aes(friend_safe_sex)) + 
+  geom_bar()
+
+# Friend non safe sex 
+ggplot(data = data_clean, aes(friend_non_safe_sex)) + 
+  geom_bar()
+
+# Respondant contraception number 
+ggplot(data = data_clean, aes(resp_contr_n)) + 
+  geom_bar()
+
+# Respondant contraception type. 
+ggplot(data = data_clean, aes(resp_contr_type)) + 
+  geom_bar() 
+```
+
+
+```{r}
+# Test neural net multinom 
+library(nnet)
+data_model <- data_clean %>% 
+  na.omit
+sex_net <- multinom(resp_contr_n ~ race + gender + living_situation, data = data_model)
+
+# make a table 
+options(scipen = 999)
+# make a coefficient table with P values 
+z <- summary(sex_net)$coefficients/summary(sex_net)$standard.errors
+# calculate Ps 
+p <- (1 - pnorm(abs(z))) * 2
+# calulate model table with p and z
+data_frame(names = sex_net$coefnames,two_methods = summary(sex_net)$coefficients[1,], 
+           z_value = z[1,],
+           p_value = p[1,],
+           none_at_all = summary(sex_net)$coefficients[2,],
+           z_value_2 = z[2,],
+           p_value_2 = p[2,]) #%>% knitr:: kable()
+
+summary(sex_net)$standard.errors
+
 ```
 

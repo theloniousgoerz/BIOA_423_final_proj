@@ -1,0 +1,38 @@
+---
+title: "Analysis"
+output: html_document
+---
+
+```{r}
+# Packages. 
+library(tidyverse)
+library(nnet)
+# data 
+data_clean <- read_csv("./data/data_clean.csv") # this will be the name of the cleaned data. 
+```
+
+```{r}
+# Test neural net multinom 
+library(nnet)
+data_model <- data_clean %>% 
+  na.omit
+sex_net <- multinom(resp_contr_n ~ race + gender + living_situation, data = data_model)
+
+# make a table 
+options(scipen = 999)
+# make a coefficient table with P values 
+z <- summary(sex_net)$coefficients/summary(sex_net)$standard.errors
+# calculate Ps 
+p <- (1 - pnorm(abs(z))) * 2
+# calulate model table with p and z
+data_frame(names = sex_net$coefnames,two_methods = summary(sex_net)$coefficients[1,], 
+           z_value = z[1,],
+           p_value = p[1,],
+           none_at_all = summary(sex_net)$coefficients[2,],
+           z_value_2 = z[2,],
+           p_value_2 = p[2,]) #%>% knitr:: kable()
+
+summary(sex_net)$standard.errors
+
+```
+
