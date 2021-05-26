@@ -1,0 +1,34 @@
+---
+title: "BIO A 423:  \n  Paper"
+author: "Thelonious Goerz"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+header-includes:
+- \usepackage{pdflscape}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+- \usepackage{setspace}\doublespacing
+output: pdf_document
+---
+
+## Introduction 
+
+In this paper, I investivate the link between COVID-19, student living situation, and contraception use. I am interested in understanding the association between network characteristics and risky sexual behavior. For example, I am interested in understanding how the number and presence of peers who engage in risky sexual behavior (one night stands, lack of contraception by type, and multiple partners) is associated with different ego outcomes. In addition to that, I want to know about behaviors related to student groups which have been associated with these behaviors (i.e. the greek community). I seek to investigate how the covid safety of a social network and one's own perceived covid safety correlates with the outcome of contraception use and type of contraception use. 
+
+In this report, I create and administer a survey to a sample of college students between the ages of 18-30, collecting demographic, age, and gender covariates. In the survey, I ask questions about the structure and characteristics of the ego's network as well as certain behaviors that are related to risky sexual behavior like alcohol use. 
+
+
+
+## Literature review
+
+
+## Methods 
+
+
+## Results 
+
+
+## Discussion and conclusion
+
+
+## Bibliography
+
