@@ -1,0 +1,69 @@
+---
+title: "Sketchpad"
+author: "Thelonious Goerz"
+date: "5/26/2021"
+output: html_document
+---
+
+```{r, include = F }
+# Load data and packages 
+library(tidyverse)
+library(MASS)
+library(nnet)
+# Data 
+data <- read_csv("./data/bio_a_data_52621.csv")
+
+```
+
+```{r}
+# Data cleaning 
+# Rename the columns in the data set. ==========================================================
+data_ clean <- data %>% dplyr :: select(
+  # Rename the variables for clean analysis. 
+  # Dummy for whether the person is a grad or undergrad 
+  student = `Are you a current undergraduate or graduate college student?`,
+  # Sexual activity. 
+  sex_active = `Are you sexually active?`,
+  # Living situation. 
+  living_situation = `Please select one of the following that describes your living situation:`,
+  # Gender. 
+  gender = `What is your Gender?`,
+  # Race identity 
+  race = `What is your racial identity?`,
+  # Hispanic. 
+  hispanic = `Are you Hispanic or Latinx?`,
+  # Birth year. 
+  year_born = `What year were you born? (YYYY)`,
+  n_close_friends = `How many close friends do you have that you see or talk to regularly? (Please provide the number e.g. 1,2,3)`,
+  # Rate friends covid safety 
+  friend_covid_safe = `On a scale of 1-5, with 3 being neutral, how would you rate your close friends' behavior at following COVID-19 safety precautions compared to others?`,
+  # Rate your covid safety. 
+  resp_covid_safe = `On a scale of 1-5, with 3 being neutral, how would you rate YOUR behavior at following COVID-19 safety precautions, relative to your friends?`,
+  # Relationship status. 
+  rel_status = `Are you currently in a relationship with another person(s)?`,
+  # N sexual partners. 
+  n_reg_sex_part = `On a regular basis, how many sexual partners do you have (please count anyone you regularly have sex with)?  (Please provide the number e.g. 1,2,3)`,
+  # N drinks per week. 
+  n_drinks_week = `On a regular basis, how many drinks per week do you have? (Please provide the number e.g. 1,2,3)`,
+  # Sexual activity of friend group. 
+  n_sex_active_friend = `Now, thinking about your friend group, how many of your friends are sexually active?`,
+  # What safe sex practices do your friends use. 
+  friend_safe_sex = `How many of your friends to the best of your knowledge would you say engage in safe sex practices, eg. using condoms, dental dams, IUD/Birth control, or getting tested for STDs/STIs?`,
+  # Share of friends who do not engage in safe sex practices. 
+  friend_non_safe_sex = `How many of your friends would you say DO NOT engage in safe sex practices?`,
+  # Respondant contraception type. 
+  resp_contr_n = `Can you describe the types of protection that you use in your sexual encounters on a regular basis? (such as condoms, dental dams, and IUD/Birth control, or getting tested for STDs/STIs)`,
+  # Respondant contraception type. 
+  resp_contr_type = `Please describe the protection that you use:`
+)
+
+# Clean the variable level names. ==================================
+
+
+
+
+
+# When survey is done, save a file with the final raw data and then save a clean file from this file. ================
+ # For later. 
+```
+
