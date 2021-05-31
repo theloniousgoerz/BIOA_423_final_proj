@@ -8,10 +8,8 @@ output: html_document
 ```{r, include = F }
 # Load data and packages 
 library(tidyverse)
-library(MASS)
-library(nnet)
 # Data 
-data <- read_csv("./data/bio_a_data_52621.csv")
+data <- read_csv("./data/bio_a_data_53121.csv")
 
 ```
 
@@ -102,7 +100,7 @@ data_clean <- data_clean %>%
 data_clean
 
 # When survey is done, save a file with the final raw data and then save a clean file from this file. ================
- # For later. 
+# write_csv(data_clean, file = "bio_a_data_clean.csv")
 ```
 
 ```{r}

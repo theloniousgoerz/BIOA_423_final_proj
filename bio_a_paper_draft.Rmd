@@ -1,5 +1,5 @@
 ---
-title: "BIO A 423:  \n  Paper"
+title: "BIO A 423:  \n  Final Paper"
 author: "Thelonious Goerz"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 header-includes:
@@ -8,21 +8,89 @@ header-includes:
 - \newcommand{\elandscape}{\end{landscape}}
 - \usepackage{setspace}\doublespacing
 output: pdf_document
+fontsize: 12pt
+bibliography: references.bib
 ---
 
 ## Introduction 
+
+```{r, include = F}
+# Packages. 
+library(tidyverse)
+# Load Data. 
+data <- read_csv("./data/bio_a_data_clean.csv") 
+```
+
 
 In this paper, I investivate the link between COVID-19, student living situation, and contraception use. I am interested in understanding the association between network characteristics and risky sexual behavior. For example, I am interested in understanding how the number and presence of peers who engage in risky sexual behavior (one night stands, lack of contraception by type, and multiple partners) is associated with different ego outcomes. In addition to that, I want to know about behaviors related to student groups which have been associated with these behaviors (i.e. the greek community). I seek to investigate how the covid safety of a social network and one's own perceived covid safety correlates with the outcome of contraception use and type of contraception use. 
 
 In this report, I create and administer a survey to a sample of college students between the ages of 18-30, collecting demographic, age, and gender covariates. In the survey, I ask questions about the structure and characteristics of the ego's network as well as certain behaviors that are related to risky sexual behavior like alcohol use. 
 
-
-
 ## Literature review
+<< add in concluding para  >> 
 
+In this short literature review I provide three sources looking at network characteristics and risky sexual behavior, STDs, and STIs. To recall, I am interested in the network characteristic effects (perceived peer group use of contraception, and perceived covid safety) on individual sexual behavior and contraception use. One issue in doing this literature review is that there is not much information about COVID and STDs at this moment, so there is some speculation on my part. With these three sources, I tried to focus on social network studies of youth and adolescent sexual behavior to provide context about my survey. 
+
+@ali20100estimating uses nationally representative survey data (Add Health) to estimate the role of peer networks in influencing adolescent sexual behavior. The authors use measures not only from individual perception but from peers as well. They are particularly interested in whether there might be a social-acceptability effect that drives the likelihood of engaging or not engaging in risky sexual behavior. They estimate a mixed effects model that controls for environmental and school level factors influencing a causal interpretation as well as utilizing two-stage least squares to deal with bias and peer selection. They specifically look at a binary variable of sexual behavior and then a count variable that measures the number of sexual partners and include demographic and school level covariates. They find a positive and statistically significant relationship between having sex and peer group effects in grade level and upper level students. Overall their major finding is that the association between peer behavior and individual sexual behavior is important. They suggest that further study should use differently worded dependent variables and or look at more granular age groups than grades. 
+Since college students are on average still young, I think that the behaviors and information presented in this paper is still relevant. 
+
+@bearman2004chains looks at the characteristics of adolescent romantic networks. They look at the ties and distributions in the network as well as attempt to develop an empirical understanding of what these networks look like as well as a theoretical understanding of how they may influence behavior. They find in their broad scope study that the methods and models that disease epidemiologists are using might not be appropriate for describing how disease diffuses through a network of youths. They reference earlier work by James Moody which suggests that networks that have low average degrees can have clusters of higher prevalence STD infection. They conclude suggesting that policy approaches to intervening focusing on high-risk individuals is not productive because the number of partners does not empirically matter for disease distribution as previously thought. Rather comprehensive sex eduation would be more important in the author’s view. This article is useful for providing background and theory for how STDs diffuse in a network of youth as well as information on how to inform questions for my survey. 
+
+@scott2008health offers a comparative study of Greek and non Greek students’s health behaviors. They assess drug and alcohol use, sexual behavior, and membership to Greek life to understand if there are differences in risky health behaviors. They find that broadly, Greeks and non-Greeks are the same, however in the presence of alcohol, Greeks are more likely to engage in risky behavior. This is important for my survey because I could ask about alcohol usage as a potential moderating variable. I could also formulate and test interactions between drinking and non drinking and different memberships as well to test if this alcohol effect is represented in the data I collect too. 
+
+These studies point to the importance of peer effects for decision making related to sexual health. While the nature of health is complicated and involves many structural factors not present in this study, I still think that there is useful information to be gained about individual sexual behaviors and their relation to a peer group. 
+
+The present study investigates the role of covid safety of both the respondant and their peer group as well as the peer group's risky sexual behavior, to understand how these might predict individual contraceptive use as well as whether they use protection at all. I use a survey and run logistic and multinomial regressions to evaluate the responses to this survey. 
+
+### Hypotheses. 
+
+Drawing on social influence and peer pressure theories of social network behavior, I predict that those who have a peer group that is more comfortable with risky behavior relative to peers will be associated with an increase in risky sexual behavior [@alexander2001peers]. 
+
+I also predict that those who do not take covid precautions seriously will be associated positively with risky sexual behavior. 
+
+In addition to this, I will also investigate the types of contraception used by these groups to understand whether there are gaps in usage by different living situations. 
 
 ## Methods 
 
+### Survey
+
+To investigate the questions from this study I ran a survey for a period of two weeks, which asked undergraduate and graduate students about their social network and their own covid behavior, their numbers of friends, and their and their friends practices regarding both safe and unsafe sexual practices. The inclusion criteria were being a student and being sexually active which in the end comprised a sample size of (N = `r nrow(data) - 1`). 
+
+In the end survey, the overall qualitative characteristics^[These are explored in detail in the results] were mostly non-Hispanic White women who were in relationships. There were very few responses from non-binary individuals and there were also many responses with missing information that were not included in this sample. 
+
+Overall, the survey design will provide useeful information, but even analytic results should be treated very carefully as these are likely not representative. 
+
+### Models 
+
+To answer my study questions empirically, I estimate both multinomial and logistic regression, to understand peer effects and social network impacts on one's engagement in safe or unsafe sex and the type of contraception that they use. I use the "Effects" package to visualize these results and present descriptive and inferential results in the following section. 
+
+For outcome variables, the logisitic regression uses an outcome variable which is whether the person uses contraception or not. This is collapsed from a survey response that initially had three levels^[1 = No protection, 2 = 1 Type of protection, 3 = 2 or more methods of protection] but was dichotomized to account for lack of responses for some. 
+
+The first model, which is a multinomial regression where the outcome variable is the whether the respondant uses $\ Y_i$ type of contraception and the second model, is a logistic regression looking at the decision to use 1 or less or two or more types of contraception.
+
+The logistic model equation is given by: 
+
+$$
+\begin{aligned}
+  ln(\frac{Y_{i}}{1-Y_i}) &=  \alpha + X\beta + \epsilon \\
+  \epsilon &\sim Bin(n,p)
+\end{aligned}
+$$
+
+Where we model the log odds of the outcome 1 or more types of contracpetion or none at all, as a linear combination of the predictors contained in X, which are, age, race, living situation, peer and personal covid safety, and the ego's peer's sexual health. Epsilon is the error distribution as this is estimated with maximum likelihood which is binomially distributed to account for the binary nature. In this case, I operationalize risky sexual behavior as not using contraception, and I control for whether the person is in a relationship or not. 
+
+Below is the equation for the miltinomial regression model:  
+
+$$
+\begin{aligned}
+ln(\frac{\pi_j} {\pi_{j}}) &= \alpha_j + X\beta + \epsilon \\ 
+\epsilon &\sim Multinom(x_i,n,p_i)
+\end{aligned}
+$$
+
+Where we model the log odds of a category j of the multinomial outcome, with a given reference category (both represented by pi), which are then both modeled by the same linear predictors in the first equation. In this case, the error distribution has been generalized to accompdate $\ x_i$ outcomes with $\ p_i$ probabilites out of n trials. 
+
+For both models, I present full models and restricted (only the focal predictor) to provide a check on the robustness of these trends with and without covariates. In the following section, I present descriptive and statistical results from my sample, and discuss the results of both. 
 
 ## Results 
 
@@ -31,4 +99,103 @@ In this report, I create and administer a survey to a sample of college students
 
 
 ## Bibliography
+
+\setlength{\parindent}{-0.2in}
+\setlength{\leftskip}{0.2in}
+\setlength{\parskip}{8pt}
+\noindent
+
+<div id="refs"></div>
+
+## Appendix 
+
+This survey asks about social network characteristics and sexual behavior. Due to the sensitive nature of this survey the information is completely anonymous and no identifying information will be collected about you, your friends, or your university. This survey is only used for educational purposes and will not be linked back to you in any way whatsoever. You do not have to answer all of the questions and may skip some if you do not wish to answer them and you are free to stop at any time. Though the nature of this survey is sensitive, the researchers interested in this information ask participants to answer as honestly and truthfully as possible. Some of the questions may ask about continuous behaviors or those that you do infrequently. When answering these questions, please choose the answer that represents your overall behavior best. 
+
+PT1.
+
+Are you a current undergraduate college student? (Y/N)
+
+Are you sexually active? (Y/N)
+
+Please select one of the following about your living situation: 
+
+* On-campus 
+* Off-campus 
+* Greek
+
+What is your Gender? 
+
+* Male
+* Female 
+* Non-Binary 
+* Transgender-Male 
+* Transgender-Female
+* Prefer to self-describe 
+
+What is your Race/Ethnicity? ( select all that apply)
+
+* White/caucasian
+* Asian/Pacific Islander 
+* Black or African American 
+* Two or more races
+* Other (please specify
+
+Are you Hispanic of Latinx Y/N.
+
+What year were you born? (YYYY)
+
+How many close friends do you have that you see or talk to regularly? Numeric [write in]
+
+On a scale of 1-5, with 3 being neutral, how would you rate your close friends' behavior at following COVID-19 safety precautions compared to others? 
+1 = not at all, 2 = A few precautions, 3 = neutral, 4 = most precautions , 5 = all precautions. 
+
+On a scale of 1-5, with 3 being neutral, how would you rate your behavior at following COVID-19 safety precautions, relative to your friends? 
+1 = not at all, 2 = A few precautions, 3 = neutral, 4 = most precautions , 5 = all precautions. 
+
+Are you currently in a relationship with another person(s)? (Y/N)?
+
+On a regular basis, how many sexual partners do you have (please count anyone you regularly have sex with)?  
+[numeric write in]
+
+On a regular basis, how many drinks per week do you have? 
+[Numeric write in]
+
+PT 2. 
+
+Now, thinking about your friend group, how many of your friends are sexually active? 
+
+* A few 
+* Some of them 
+* Most of them
+* All of them
+
+How many of your friends to the best of your knowledge would you say engage in safe sex practices, eg. using condoms, dental dams, IUD/Birth control, or getting tested for STDs/STIs? 
+
+A few 
+Some of them 
+Most of them
+All of them
+
+How many of your friends would you say DO NOT engage in safe sex practices?
+
+A few 
+Some of them 
+Most of them
+All of them
+
+Can you describe the types of protection that you use in your sexual encounters on a regular basis? 
+
+* 1 = No protection at all. 
+* 2 = 1 type of sexual protection (such as condoms, dental dams, and IUD/Birth control, or getting tested for STDs/STIs). 
+* 3 = 2 or more methods of protection. 
+
+Please describe the protection that you use: 
+
+* My partner(s) and I use condoms.
+* My partner(s) and I use an IUD/Birth control.
+* My partner(s) and I use a dental dam. 
+* I use some other type of protection. 
+* My partner(s) and I get tested for STDs/STIs. 
+* My partner and I use 2 or more of the above protection methods.
+
 

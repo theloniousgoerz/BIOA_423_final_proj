@@ -8,15 +8,46 @@ output: html_document
 library(tidyverse)
 library(nnet)
 # data 
-data_clean <- read_csv("./data/data_clean.csv") # this will be the name of the cleaned data. 
+data_clean <- read_csv("./data/bio_a_data_clean.csv") # this will be the name of the cleaned data. 
 ```
 
+# Base Model. 
+
 ```{r}
-# Test neural net multinom 
-library(nnet)
-data_model <- data_clean %>% 
-  na.omit
-sex_net <- multinom(resp_contr_n ~ race + gender + living_situation, data = data_model)
+# Fit a neural net multinomial regression. 
+data_clean <- data_clean[-1,]
+data_model <-  data_clean %>% 
+  na.omit %>% 
+  mutate(contr_or_not = ifelse(resp_contr_n == "No protection at all",0,1)) 
+## ==== Logistic regression
+
+# Model. 
+glm_contr <- glm(contr_or_not ~ I(living_situation == "Greek") +
+                   I(living_situation == "Off-campus") + 
+                  resp_covid_safe 
+                  #friend_covid_safe 
+                  # race + 
+                  # gender + 
+                  # hispanic + 
+                  # rel_status
+                 , 
+                 family = binomial(link = "logit"),
+    data = data_model)
+
+summary(glm_contr)
+```
+
+The coefficients show that there are a lot of people 
+
+```{r}
+## Multinomial 
+
+sex_net <- multinom(resp_contr_n ~ I(living_situation == "Greek") + 
+                      # Manually specify argument. 
+                      I(living_situation == "Off-campus"), 
+                    # Data argument. 
+                    data = data_model)
+sex_net %>% summary()
 
 # make a table 
 options(scipen = 999)
@@ -25,14 +56,31 @@ z <- summary(sex_net)$coefficients/summary(sex_net)$standard.errors
 # calculate Ps 
 p <- (1 - pnorm(abs(z))) * 2
 # calulate model table with p and z
-data_frame(names = sex_net$coefnames,two_methods = summary(sex_net)$coefficients[1,], 
-           z_value = z[1,],
-           p_value = p[1,],
-           none_at_all = summary(sex_net)$coefficients[2,],
-           z_value_2 = z[2,],
-           p_value_2 = p[2,]) #%>% knitr:: kable()
+m_table_1 <- data_frame("Variables" = sex_net$coefnames,"Two methods" = summary(sex_net)$coefficients[1,], 
+           "Z-value " = z[1,],
+           "P-value " = p[1,],
+           "None at all" = summary(sex_net)$coefficients[2,],
+           "Z-Value" = z[2,],
+           "P-value" = p[2,]) %>% knitr:: kable(caption = "Table 2: Multinomial Regression Results: Base", digits = 3)
+# NaN seem to be introduced because therre is separation in the data for one of them predictors. 
+# Additionally, the numbers of non-binary individuals are so low that it is probably unlikely to get a response that is valid. 
+```
 
-summary(sex_net)$standard.errors
+In this multinomial logit model, the reference category is "On-campus".
+In comparison to living on-campus: 
+* Being in the category greek corresponds to a `r summary(sex_net)$coefficients[1,2]` decrease in the log odds of using two methods of contraception compared to one method, but it is not statistically significant. 
+* Being in the category off-campus corresponds to a `r summary(sex_net)$coefficients[1,3]` decrease in the log-odds of using two methods of protection in comparison to using one method, but this is not statistically significant either. 
+
+In comparison to those living on campus: 
+* Being in the category greek corresponds to a `r summary(sex_net)$coefficients[2,2]` decrease in the log-odds of using no protection at all in comparison to one method, but this is not significant. 
+* Being in the ctegory Off-campus, corresponds to an `r summary(sex_net)$coefficients[2,3]` decrease in the log-odds of using no protection at all in comparison to 1 method of protection, but this is not significant. 
+
+# Full Model. 
+
+```{r}
+# Create a visual of that model. 
+pred_base_greek <- predict(sex_net, newdata = data_frame(living_situation = "Greek"), type = "probs") 
+pred_base_off <- predict(sex_net, newdata = data_frame(living_situation = "Off-campus"), type = "probs") 
 
 ```
 
