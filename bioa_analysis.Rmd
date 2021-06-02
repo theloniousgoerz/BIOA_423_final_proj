@@ -14,40 +14,47 @@ data_clean <- read_csv("./data/bio_a_data_clean.csv") # this will be the name of
 # Base Model. 
 
 ```{r}
-# Fit a neural net multinomial regression. 
+# Logistic models 
+options(scipen = 999,digits = 3)
 data_clean <- data_clean[-1,]
 data_model <-  data_clean %>% 
   na.omit %>% 
   mutate(contr_or_not = ifelse(resp_contr_n == "No protection at all",0,1)) 
-## ==== Logistic regression
+## ==== Logistic regression 1 
 
 # Model. 
-glm_contr <- glm(contr_or_not ~ I(living_situation == "Greek") +
+# First GLM tests the association between resp covid safe and risky sex 
+glm_contr_1 <- glm(contr_or_not ~ I(living_situation == "Greek") +
                    I(living_situation == "Off-campus") + 
-                  resp_covid_safe 
-                  #friend_covid_safe 
-                  # race + 
-                  # gender + 
-                  # hispanic + 
-                  # rel_status
-                 , 
+                 resp_covid_safe, 
                  family = binomial(link = "logit"),
     data = data_model)
 
-summary(glm_contr)
+
+# Logistic regression 2
+
+glm_contr_2 <- glm(contr_or_not ~ I(living_situation == "Greek") +
+                   I(living_situation == "Off-campus"), 
+                 family = binomial(link = "logit"),
+    data = data_model)
+
+
+modelsummary::modelsummary(list(glm_contr_2,glm_contr_1),
+                           title = "Logistic regression base and full models",
+                           estimate = "{estimate}{stars}")
 ```
 
-The coefficients show that there are a lot of people 
+In both the full and the restricted model, none of the coefficients are significant. The focal relationship, the association between living sitution and contraception use is not significantly different in comparison to the reference category living "on-campus."
 
 ```{r}
 ## Multinomial 
 
 sex_net <- multinom(resp_contr_n ~ I(living_situation == "Greek") + 
                       # Manually specify argument. 
-                      I(living_situation == "Off-campus"), 
+                      I(living_situation == "Off-campus") + 
+                      race + gender, 
                     # Data argument. 
                     data = data_model)
-sex_net %>% summary()
 
 # make a table 
 options(scipen = 999)
@@ -61,9 +68,10 @@ m_table_1 <- data_frame("Variables" = sex_net$coefnames,"Two methods" = summary(
            "P-value " = p[1,],
            "None at all" = summary(sex_net)$coefficients[2,],
            "Z-Value" = z[2,],
-           "P-value" = p[2,]) %>% knitr:: kable(caption = "Table 2: Multinomial Regression Results: Base", digits = 3)
+           "P-value" = p[2,]) %>% knitr:: kable(caption = "Table 2: Multinomial Regression Results", digits = 3)
 # NaN seem to be introduced because therre is separation in the data for one of them predictors. 
 # Additionally, the numbers of non-binary individuals are so low that it is probably unlikely to get a response that is valid. 
+m_table_1
 ```
 
 In this multinomial logit model, the reference category is "On-campus".
