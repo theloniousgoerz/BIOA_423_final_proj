@@ -1,5 +1,5 @@
 ---
-title: "BIO A 423:  \n  Final Paper"
+title: "*BIO A 423:  \n  COVID-19 network effects on sexual health behavior*"
 author: "Thelonious Goerz"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 header-includes:
@@ -11,47 +11,39 @@ output: pdf_document
 fontsize: 12pt
 bibliography: references.bib
 ---
-
 ## Introduction 
 
 ```{r, include = F}
 # Packages. 
 library(tidyverse)
 library(nnet)
+library(kableExtra)
 # Load Data. 
 data_clean <- read_csv("./data/bio_a_data_clean.csv") 
 ```
 
 
-In this paper, I investivate the link between COVID-19, student living situation, and contraception use. I am interested in understanding the association between network characteristics and risky sexual behavior. For example, I am interested in understanding how the number and presence of peers who engage in risky sexual behavior is associated with different ego health outcomes. In addition to that, living context and respondant COVID-19 saftey correlate with using contraception. 
+In this paper, I investigate the link between behavior related to COVID-19 safety, student living situation, and contraception use. I am interested in understanding how the presence of peers who engage in risky covid behavior is associated with different ego health outcomes. In addition to that, how living context and respondent COVID-19 safety correlate with using contraception.  
 
-In this report, I summarize and analyze  a survey sample of college students who are sexually active, collecting demographic, age, and gender covariates. In the survey, I ask questions about the structure and characteristics of the ego's network as well as certain behaviors that are related to risky sexual behavior like alcohol use. 
-
-I then estimate two different regression models that look at associations between contraceptive type and contraceptive use from respondant data. I also provide a discussion of the data quality and statistical and analytical critiques. 
+In this report, I summarize and analyze a survey sample of college students who are sexually active, collecting demographic, age, and gender covariates. In the survey, I ask questions about the structure and characteristics of the ego's network as well as certain behaviors that are related to risky sexual behavior like alcohol use. I then estimate two different regression models that look at associations between contraceptive type and contraceptive use from respondent data. I also provide a discussion of the data quality and statistical and analytical critiques. From a public health standpoint, understanding how network effects from COVID may affect different behaviors that may increase STD spread or negative population sexual health outcomes is important. This research contributes to understanding those dynamics. 
 
 ## Literature review
-<< add in concluding para  >> 
 
-In this short literature review I provide three sources looking at network characteristics and risky sexual behavior, STDs, and STIs. To recall, I am interested in the network characteristic effects (perceived peer group use of contraception, and perceived covid safety) on individual sexual behavior and contraception use. One issue in doing this literature review is that there is not much information about COVID and STDs at this moment, so there is some speculation on my part. With these three sources, I tried to focus on social network studies of youth and adolescent sexual behavior to provide context about my survey. 
+In this literature review I look at network characteristics and risky sexual behavior, STDs, and STIs. This study is interested in network characteristic effects (perceived peer group use of contraception, and perceived covid safety) on individual sexual behavior and contraception use. Unfortunately, literature on network effects are still scarce and there is not much information about COVID and STDs at this moment. However, I assemble studies of young adult and adolescent sexual behavior to provide context about these dynamics and inform my survey. 
 
-@ali2011estimating uses nationally representative survey data (Add Health) to estimate the role of peer networks in influencing adolescent sexual behavior. The authors use measures not only from individual perception but from peers as well. They are particularly interested in whether there might be a social-acceptability effect that drives the likelihood of engaging or not engaging in risky sexual behavior. They estimate a mixed effects model that controls for environmental and school level factors influencing a causal interpretation as well as utilizing two-stage least squares to deal with bias and peer selection. They specifically look at a binary variable of sexual behavior and then a count variable that measures the number of sexual partners and include demographic and school level covariates. They find a positive and statistically significant relationship between having sex and peer group effects in grade level and upper level students. Overall their major finding is that the association between peer behavior and individual sexual behavior is important. They suggest that further study should use differently worded dependent variables and or look at more granular age groups than grades. 
-Since college students are on average still young, I think that the behaviors and information presented in this paper is still relevant. 
+@ali2011estimating uses nationally representative survey data (Add Health) to estimate the role of peer networks in influencing adolescent sexual behavior. The authors use measures not only from individual perception but from peers as well. They are particularly interested in whether there might be a social-acceptability effect that drives the likelihood of engaging or not engaging in risky sexual behavior. They estimate a mixed effects model that controls for environmental and school level factors influencing a causal interpretation as well as utilizing two-stage least squares to deal with bias and peer selection. They specifically look at a binary variable of sexual behavior and then a count variable that measures the number of sexual partners and include demographic and school level covariates. They find a positive and statistically significant relationship between having sex and peer group effects in grade level and upper level students. Overall their major finding is that the association between peer behavior and individual sexual behavior is important. They suggest that further study should use differently worded dependent variables and or look at more granular age groups than grades. This paper is useful for this research because it gives insight into how network effects may influence sexual behavior. In particular, this suggests that COVID behavior and peer decisions related to contraception and safe sex may influence individual decisions. 
 
-@bearman2004chains looks at the characteristics of adolescent romantic networks. They look at the ties and distributions in the network as well as attempt to develop an empirical understanding of what these networks look like as well as a theoretical understanding of how they may influence behavior. They find in their broad scope study that the methods and models that disease epidemiologists are using might not be appropriate for describing how disease diffuses through a network of youths. They reference earlier work by James Moody which suggests that networks that have low average degrees can have clusters of higher prevalence STD infection. They conclude suggesting that policy approaches to intervening focusing on high-risk individuals is not productive because the number of partners does not empirically matter for disease distribution as previously thought. Rather comprehensive sex eduation would be more important in the author’s view. This article is useful for providing background and theory for how STDs diffuse in a network of youth as well as information on how to inform questions for my survey. 
+@bearman2004chains looks at the characteristics of adolescent romantic networks. They look at the ties and distributions in the network as well as attempt to develop an empirical understanding of what these networks look like as well as a theoretical understanding of how they may influence behavior. They find in their broad scope study that the methods and models that disease epidemiologists are using might not be appropriate for describing how disease diffuses through a network of youths. They reference earlier work by James Moody which suggests that networks that have low average degrees can have clusters of higher prevalence STD infection. They conclude suggesting that policy approaches to intervening focusing on high-risk individuals is not productive because the number of partners does not empirically matter for disease distribution as previously thought. Rather comprehensive sex education would be more important in the author’s view. This article provides important evidence on how STDs diffuse in a network. Building on this work, I suggest that one method of diffusion of risky behavior could be through covid safety and peer promiscuity.
 
-@scott2008health offers a comparative study of Greek and non Greek students’s health behaviors. They assess drug and alcohol use, sexual behavior, and membership to Greek life to understand if there are differences in risky health behaviors. They find that broadly, Greeks and non-Greeks are the same, however in the presence of alcohol, Greeks are more likely to engage in risky behavior. This is important for my survey because I could ask about alcohol usage as a potential moderating variable. I could also formulate and test interactions between drinking and non drinking and different memberships as well to test if this alcohol effect is represented in the data I collect too. 
+@scott2008health offers a comparative study of Greek and non Greek students’s health behaviors. They assess drug and alcohol use, sexual behavior, and membership to Greek life to understand if there are differences in risky health behaviors. They find that broadly, Greeks and non-Greeks are the same, however in the presence of alcohol, Greeks are more likely to engage in risky behavior. Building on this research, I ask about alcohol usage as a potential moderating variable. In addition, this shows that while there may not be immediate differences in Greek and non-Greek living situations, there may be environmental factors like alcohol usage that increase the social network effects. 
 
-These studies point to the importance of peer effects for decision making related to sexual health. While the nature of health is complicated and involves many structural factors not present in this study, I still think that there is useful information to be gained about individual sexual behaviors and their relation to a peer group. 
-
-The present study investigates the role of covid safety of both the respondant and their peer group as well as the peer group's risky sexual behavior, to understand how these might predict individual contraceptive use as well as whether they use protection at all. I use a survey and run logistic and multinomial regressions to evaluate the responses to this survey. 
+These studies point to the importance of peer effects for decision making related to sexual health. While the nature of health is complicated and involves many structural factors not present in this study, I still think that there is useful information to be gained about individual sexual behaviors and their relation to a peer group. The present study investigates the role of covid safety of both the respondent and their peer group as well as the peer group's risky sexual behavior, to understand how these might predict individual contraceptive use as well as whether they use protection at all. I use a survey and run logistic and multinomial regressions to evaluate the responses to this survey. 
 
 ### Hypotheses. 
 
 Drawing on social influence and peer pressure theories of social network behavior [@alexander2001peers] :
 
-* I predict that those who have a peer group that is more comfortable with risky behavior relative to peers will be associated with an increase in risky sexual behavior. 
-
-* I also predict that those who do not take covid precautions seriously will be associated positively with risky sexual behavior. 
+* I predict that those who have a peer group that is more comfortable with risky COVID behavior relative to peers will be associated with an increase in risky sexual behavior. 
 
 * In addition to this, I will also investigate the types of contraception used by these groups to understand whether there are gaps in usage by different living situations. 
 
@@ -59,17 +51,19 @@ Drawing on social influence and peer pressure theories of social network behavio
 
 ### Survey
 
-To investigate the questions from this study I ran a survey for a period of two weeks, which asked undergraduate and graduate students about their social network and their own covid behavior, their numbers of friends, and their and their friends practices regarding both safe and unsafe sexual practices. The inclusion criteria were being a student and being sexually active which in the end comprised a sample size of (N = `r nrow(data_clean)`). 
+To investigate the questions from this study I ran a survey for a period of two weeks, which asked undergraduate and graduate students about their social network and their own covid behavior, their numbers of friends, and their and their friends practices regarding both safe and unsafe sexual practices. I implemented the survey for two weeks via Google forms and distributed it via online social networking platforms that college students frequently use.^[Reddit, Facebook, and Twitter] Once the data was collected, the survey data was cleaned and filtered to only responses from students (both undergraduate and graduate) who were still in school and sexually active. This in the end comprised a sample size of (N = `r nrow(data_clean)`). 
 
-Overall, the survey design will provide useeful information, but even analytic results should be treated very carefully as these are likely not representative. 
+The focal independent variable asks about where the person lives, from which they can choose "On-campus", "Off-campus", or in the "Greek" system. In addition to that, I ask about the respondents to rate their personal and their peer's covid safety on a likert scale from one to five, with three being neutral, and each end being all or no safety precautions. In addition to that, I ask the respondents to evaluate their peer's use of contraceptives and their engagement with safe sex practices, to measure the overall safety of their social group. Finally, I include demographic variables for race/ethnicity, gender and their numbers of close friends. 
+
+Finally, a few limitations to these survey questions are that they are approximations from the respondent which may be subject to response bias. In addition, there is no way to get a reality check on a respondents assessment of their social network, because the survey is anonymous. Additionally, the sample size is an issue. In the best case scenario, these results should be treated as descriptive. Overall, the survey design will provide useful information, but even analytic results should be treated very carefully as these are likely not representative. 
 
 ### Models 
 
-To answer my study questions empirically, I estimate both multinomial and logistic regression, to understand peer effects and social network impacts on one's engagement in safe or unsafe sex and the type of contraception that they use. I use the "Effects" package to visualize these results and present descriptive and inferential results in the following section. 
+To answer my study questions empirically, I estimate both multinomial and logistic regression, to understand peer effects and social network impacts on one's engagement in safe or unsafe sex and the type of contraception that they use. I present descriptive and inferential results in the following section. 
 
-For outcome variables, the logisitic regression uses an outcome variable which is whether the person uses contraception or not. This is collapsed from a survey response that initially had three levels^[1 = No protection, 2 = 1 Type of protection, 3 = 2 or more methods of protection] but was dichotomized to account for lack of responses for some. 
+For outcome variables, the logistic regression uses an outcome variable which is whether the person uses contraception or not. This is collapsed from a survey response that initially had three levels^[1 = No protection, 2 = 1 Type of protection, 3 = 2 or more methods of protection] but was dichotomized to account for lack of responses for some. These are later explored using the multinomial outcome model. 
 
-The first model, which is a multinomial regression where the outcome variable is the whether the respondant uses $\ Y_i$ type of contraception and the second model, is a logistic regression looking at the decision to use 1 or less or two or more types of contraception.
+The first model is a logistic regression looking at the decision to use contraception or not and the second is a multinomial regression where the outcome variable is the number of contraceptive methods the respondent uses.
 
 The logistic model equation is given by: 
 
@@ -80,9 +74,11 @@ $$
 \end{aligned}
 $$
 
-Where we model the log odds of the outcome 1 or more types of contracpetion or none at all, as a linear combination of the predictors contained in X, which are, age, living situation, personal covid safety. Epsilon is the error distribution as this is estimated with maximum likelihood which is binomially distributed to account for the binary nature. In this case, I operationalize risky sexual behavior as not using contraception. 
+Where we model the log odds of the outcome 1 or more types of contraception compare to none at all, as a linear combination of the predictors contained in X, which are, age, living situation, personal covid safety. Epsilon is the error distribution as this is estimated with maximum likelihood which is binomially distributed to account for the binary nature. In this case, I operationalize risky sexual behavior as not using contraception. 
 
-Below is the equation for the miltinomial regression model:  
+One major limitation of the sample size is the lack of statistical power to accommodate predictors. Demographic predictors could not be included because of the small sample size and separation in the data. In this case, the question asking about an ego's peer sexual safety would not allow the model to converge because of perfect prediction. 
+
+Below is the equation for the multinomial regression model:  
 
 $$
 \begin{aligned}
@@ -91,48 +87,91 @@ ln(\frac{\pi_j} {\pi_{j}}) &= \alpha_j + X\beta + \epsilon \\
 \end{aligned}
 $$
 
-Where we model the log odds of a category j of the multinomial outcome, with a given reference category (both represented by pi), which are then modeled by the linear predictors, race, gender, and living situation. In this case, the error distribution has been generalized to accompdate $\ x_i$ outcomes with $\ p_i$ probabilites out of n trials. 
+Where we model the log odds of a category j of the multinomial outcome, with a given reference category (both represented by pi), which are then modeled by the linear predictors, living situation, race, and gender. In this case, the error distribution has been generalized to accommodate $\ x_i$ outcomes with $\ p_i$ probabilities out of n trials. 
 
-For the logistic model, I present full  and restricted (only the focal predictor) models to provide a check on the robustness of these trends with and without covariates. In the following section, I present descriptive and statistical results from my sample, and discuss the results of both. 
+For the logistic model, I present full and restricted (only the focal predictor living situation) models to provide a check on the robustness of these trends with and without covariates. In the following section, I present descriptive and statistical results from my sample, and discuss the results of both. 
 
 ## Results 
 
 ### Descriptive statistics 
 
-```{r, echo = F, message=F}
+In the end survey, the overall qualitative characteristics were mostly non-Hispanic White women who were in relationships. There were very few responses from non-binary individuals and there were also many responses with missing information that were not included in this sample. 
+
+Below I present a visual description of the responses to the number of contraceptions the person uses and their race. 
+
+```{r, echo = F, fig.cap = "Survey responses to contraceptive use",fig.width=4,fig.height=2, warning = F, message = F, fig.align='left'}
+
+options(knitr.kable.NA = '') # This code removes NAs that are an issue with using the Kniter function in R with a pdf output. 
 options(scipen = 999,digits = 3)
 data_clean <- data_clean[-1,]
 data_model <-  data_clean %>% 
   na.omit %>% 
-  mutate(contr_or_not = ifelse(resp_contr_n == "No protection at all",0,1)) 
+  mutate(contr_or_not = ifelse(resp_contr_n == "No protection at all",0,1),
+         contraceptive = contr_or_not) 
 
 library(gtsummary)
-data_model %>% select(race,gender,resp_contr_n,resp_covid_safe,contr_or_not,living_situation) %>% 
-  tbl_summary()
+library(gt)
+# Visuals 
+data_model %>% 
+  ggplot(aes(x = resp_contr_n, fill = resp_contr_n)) + 
+  geom_bar() + 
+  scale_fill_manual(values = c("#C8581C", "#1C26C8","#C81CC3"),
+                    name = "Number of Contraceptives Used") + 
+  theme_minimal() + 
+   theme(text=element_text(size=5,  family="serif")) + 
+  labs(x = "Number of Contraceptives Used",
+       y = "Count", 
+       title = "")
 ```
 
-In the end survey, the overall qualitative characteristics were mostly non-Hispanic White women who were in relationships. There were very few responses from non-binary individuals and there were also many responses with missing information that were not included in this sample. 
+```{r, echo = F, fig.cap = "Survey responses to demographics",fig.width=4,fig.height=2, warning = F, message = F, fig.align='left'}
+# Visuals 
+data_model %>% 
+  ggplot(aes(x = race, fill = race)) + 
+  geom_bar() + 
+  scale_fill_manual(values = c("red","blue","orange","#199E2D"),
+                    name = "Race") + 
+  theme_minimal() + 
+   theme(text=element_text(size=5,  family="serif")) + 
+  labs(x = "Race",
+       y = "Count", 
+       title = "")
+```
 
-Most people used one or more types of contraception with only 4 people saying they didn't. In addition to that, most said that they were following most COVID-19 precautions. A majority also said that they used contraception too and a majority lived off campus in comparison to the next most being on campus, and finally lastly greek. 
+Most people used one or more types of contraception with only 4 people saying they didn't. In addition to that, most said that they followed COVID-19 precautions, and none said they were following none. A majority said that they used contraception too and a majority lived off campus in comparison to the next most being on campus.
+
+
+```{r, echo = F, message=F, warning=F}
+
+data_model %>% select(race,gender,resp_contr_n,resp_covid_safe,contraceptive,living_situation, friend_safe_sex) %>% 
+  tbl_summary(label = list(
+                contraceptive ~ "Use Contraceptive",
+                race ~ "Race",
+                gender ~ "Gender",
+                resp_contr_n ~ "Number of contraceptives used",
+                resp_covid_safe ~ "Covid safety rating (1-5)",
+                living_situation ~ "Living situation",
+                friend_safe_sex ~ "Amount of Friends who practice safe sex"
+              )) %>% as_data_frame() %>% knitr:: kable(caption = "Summary Statistics",
+                booktabs = T) %>% kable_styling(font_size = 6)
+```
 
 ### Logistic results 
 
 In table M1, I summarize the results from the full and restricted logistic regression models.
 
-In both the full and the restricted model, none of the coefficients are significant. The focal relationship, the association between living sitution and contraception use is not significantly different in comparison to the reference category living "on-campus."
+In both the full and the restricted model, none of the coefficients are significant. The focal relationship, the association between living situation and contraception use is not significantly different in comparison to the reference category living "on-campus."
 
-```{r, echo = F}
+```{r, echo = F, warning = F, message = F}
 # Logistic models 
 ## ==== Logistic regression 1 
 
 # Model. 
 # First GLM tests the association between resp covid safe and risky sex 
 glm_contr_1 <- glm(contr_or_not ~ I(living_situation == "Greek") +
-                   I(living_situation == "Off-campus") + 
-                 resp_covid_safe, 
+                   I(living_situation == "Off-campus")+ friend_covid_safe, 
                  family = binomial(link = "logit"),
     data = data_model)
-
 
 # Logistic regression 2
 
@@ -141,23 +180,37 @@ glm_contr_2 <- glm(contr_or_not ~ I(living_situation == "Greek") +
                  family = binomial(link = "logit"),
     data = data_model)
 
+## Model visualization table.
 
-modelsummary::modelsummary(list(glm_contr_2,glm_contr_1),
-                           title = "M1: Logistic regression base and full models",
-                           estimate = "{estimate}{stars}")
+m_2 <- tbl_regression(glm_contr_2, 
+                      label = list("(Intercept)" ~ "Constant",
+             'I(living_situation == "Greek")TRUE' ~ "Greek",
+             'I(living_situation == "Off-campus")TRUE' ~ "Off-Campus"))
+
+m_1 <- tbl_regression(glm_contr_1,
+                      label = list(
+                        "(Intercept)" ~ "Constant",
+             'I(living_situation == "Greek")TRUE' ~ "Greek",
+             'I(living_situation == "Off-campus")TRUE' ~ "Off-Campus",
+             friend_covid_safe ~ "Covid Safety of Peers"))
+
+tbl_merge(list(m_2,m_1),
+          tab_spanner = c("Model 1", "Model 2")) %>% 
+  as_tibble() %>% 
+  knitr:: kable(caption = "M1: Logistic regression base and full models",
+                booktabs = T, digits = 3) %>%
+  kable_styling(font_size = 6)
 ```
 
-The model shows that being in the category Greek or living off-campus is positively associated with an increase in using contraception, but these trends are not significant. Furthermore, in comparison to the reference category, there are not significant diffrences between different levels of those who rate their individual covid saftey higher. In fact, coefficients indicate that for those who rate their covid safety higher there is a negative relationship with using contraception. 
+The model shows that being in the category Greek or living off-campus is positively associated with an increase in using contraception, but these trends are not significant. Furthermore, in comparison to the reference category, there are not significant differences between different levels of respondent rate peer group covid safety. In fact, coefficients indicate that for those who rate their covid safety higher there is a negative relationship with using contraception. 
 
-
-Other demographic predictors could not be included because of the small sample size and separation in the data. In this case, the question asking about an ego's peer sexual saftey would not allow the model to converse because of perfect prediction. 
+In the full model, for those who live in the Greek system compared to on campus, there is a `r summary(glm_contr_1)$coefficients[2]` increase in the log-odds of using contraception, which is not significant. For those who live off-campus, there is a `r summary(glm_contr_1)$coefficients[3]` increase in the log-odds of using contraception, but it is also not significant. 
 
 \newpage
 ### Multinomial results 
 
 ```{r, echo = F, message = F, warning = F}
 ## Multinomial 
-library(kableExtra)
 sex_net <- multinom(resp_contr_n ~ I(living_situation == "Greek") + 
                       # Manually specify argument. 
                       I(living_situation == "Off-campus") + 
@@ -192,24 +245,29 @@ df_2
 # Additionally, the numbers of non-binary individuals are so low that it is probably unlikely to get a response that is valid. 
 ```
 
-In this multinomial logit model, the reference category is "On-campus".
-In comparison to living on-campus: 
+In comparison to living on-campus, being in the category Greek corresponds to a `r summary(sex_net)$coefficients[1,2]` decrease in the log odds of using two methods of contraception compared to one method, but it is not statistically significant. Being in the category off-campus corresponds to a `r summary(sex_net)$coefficients[1,3]` decrease in the log-odds of using two methods of protection in comparison to using one method, but this is not statistically significant either. 
 
-* Being in the category greek corresponds to a `r summary(sex_net)$coefficients[1,2]` decrease in the log odds of using two methods of contraception compared to one method, but it is not statistically significant. 
+In comparison to those living on campus, being in the category Greek corresponds to a `r summary(sex_net)$coefficients[2,2]` decrease in the log-odds of using no protection at all in comparison to one method, which is significant. Being in the category Off-campus, corresponds to an `r summary(sex_net)$coefficients[2,3]` decrease in the log-odds of using no protection at all in comparison to 1 method of protection, but this is not significant. 
 
-* Being in the category off-campus corresponds to a `r summary(sex_net)$coefficients[1,3]` decrease in the log-odds of using two methods of protection in comparison to using one method, but this is not statistically significant either. 
+Non-binary, prefer to self describe, and those identifying as two or more races seem to attenuate the likelihood of using two methods in reference to one, which are significant. In relation to "none at all" all of the other race and gender categories are significantly negatively associated with using no protection at all, however, we should be skeptical of these results because of the low sample size and the lack of predictive power that can be generated. 
 
-In comparison to those living on campus: 
-* Being in the category greek corresponds to a `r summary(sex_net)$coefficients[2,2]` decrease in the log-odds of using no protection at all in comparison to one method, which is significant. 
+## Discussion 
 
-* Being in the ctegory Off-campus, corresponds to an `r summary(sex_net)$coefficients[2,3]` decrease in the log-odds of using no protection at all in comparison to 1 method of protection, but this is not significant. 
+Overall, in this study I sought to understand the network effects of COVID-19 health behavior and peer group risky sexual behavior on individual contraception use or lack thereof. Broadly, I found that my results were not statistically significant for predicting whether someone decided to use contraception or not. In the logistic regression models, there was not a correlation with friend's covid safety or the respondent's living situation. However, in the multinomial model, predicting number of contraceptives used, race and gender covariates did significantly predict whether one would use no protection or some protection. Yet, due to limitations I summarize in this section, we should be skeptical of these results because of the small sample size. 
 
-Non-binary, prefer to self describe, and those identifying as two or more races seem to attenuate the likelihood of using two methods in reference to one, which are significant. In relation to "none at all" all of the other race and gender categories are significantly negatively associated with using no protection at all, howver, we should be skeptical of these results because of the low sample size and the lack of predictive power that can be genarated. 
+Overall, the results suggests that there is not an association between living situation and contraception use and number. Consistent with previous studies, this is not unexpected. I would have liked to include an interaction between drinking and the respondent's living status, but this was not possible due to issues of statistical power. In the multinomial model, this suggests that there is variation in the contraceptive access between different racial groups and gender identities. This may be reflective of barriers in access due to discrimination. 
 
+### Limitations 
 
-## Discussion and conclusion
+Firstly, with respect to the survey design, I think that the questions are reasonably well instrumented and unambiguous. I learned that after implementing the survey that three questions asking about the shares of a respondent's network that engaged in safe and unsafe sex and were sexually active, did not include a "none" option, but rather the lowest level of that question was "a few". This rendered the question unusable, because there is no way to know whether some people who had no sexually active friends put down "a few" 
 
+Another major limitation is the sample size, which I briefly mentioned in the methods section with respect to my models. Overall, there is a very small N, which makes sample size intensive models like multinomial and logistic regression dubious at best. In two instances when modeling the outcomes for both models, there was separation in the data, where perfect prediction could be attained by including one predictor. This is not a solvable problem in studies with larger sample sizes, but with a small N the likelihood of separation is much higher. In future studies, ensuring that there is an N > 500, would be ideal for making these results usable. 
 
+Methodologically, I think that this study could make great use of the ordered outcome variables in an ordered logit model. Additionally, ordered logit designs that relax the proportional odds assumption would be ideal for this design, because it is likely that there is not a linear change between covid safety ratings or the overall sexual health of one's network. Though, these techniques also require a larger sample size. 
+
+From a question point of view, I would include questions about the respondents relationships with their close friends. While I asked about number of close friends, the information about the type of relationship that they have could prove very useful. For example, some may have different attachment styles with some or all of their friends, or the opposite. As we have seen in other network studies, this is important for understanding how important the social network can be for an individual's behavior. 
+
+\newpage
 ## Bibliography
 
 \setlength{\parindent}{-0.2in}
@@ -246,7 +304,7 @@ What is your Gender?
 
 What is your Race/Ethnicity? ( select all that apply)
 
-* White/caucasian
+* White/Caucasian
 * Asian/Pacific Islander 
 * Black or African American 
 * Two or more races
@@ -309,5 +367,3 @@ Please describe the protection that you use:
 * I use some other type of protection. 
 * My partner(s) and I get tested for STDs/STIs. 
 * My partner and I use 2 or more of the above protection methods.
-
-
