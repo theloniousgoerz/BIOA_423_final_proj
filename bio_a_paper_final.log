@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.6.3)  4 JUN 2021 13:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.6.3)  4 JUN 2021 13:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**bio_a_paper_draft.tex
-(./bio_a_paper_draft.tex
+**bio_a_paper_final.tex
+(./bio_a_paper_final.tex
 LaTeX2e <2021-06-01>
 L3 programming layer <2021-06-01> (/Users/theloniousgoerz/Library/TinyTeX/texmf
 -dist/tex/latex/base/article.cls
@@ -583,12 +583,12 @@ d-pdftex.def
 File: l3backend-pdftex.def 2021-05-07 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count303
 \l__pdf_internal_box=\box71
-) (./bio_a_paper_draft.aux
+) (./bio_a_paper_final.aux
 
 LaTeX Warning: Label `tab:unnamed-chunk-5' multiply defined.
 
 )
-\openout1 = `bio_a_paper_draft.aux'.
+\openout1 = `bio_a_paper_final.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 89.
 LaTeX Font Info:    ... okay on input line 89.
@@ -627,9 +627,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 89.
 LaTeX Info: Redefining \pageref on input line 89.
 LaTeX Info: Redefining \nameref on input line 89.
-(./bio_a_paper_draft.out) (./bio_a_paper_draft.out)
+(./bio_a_paper_final.out) (./bio_a_paper_final.out)
 \@outlinefile=\write3
-\openout3 = `bio_a_paper_draft.out'.
+\openout3 = `bio_a_paper_final.out'.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -730,12 +730,12 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 223.
 [4] [5] [6]
-<bio_a_paper_draft_files/figure-latex/unnamed-chunk-3-1.pdf, id=107, 562.1pt x 
+<bio_a_paper_final_files/figure-latex/unnamed-chunk-3-1.pdf, id=107, 562.1pt x 
 134.5025pt>
-File: bio_a_paper_draft_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (
+File: bio_a_paper_final_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (
 type pdf)
-<use bio_a_paper_draft_files/figure-latex/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: bio_a_paper_draft_files/figure-latex/unnamed-chunk-3-1
+<use bio_a_paper_final_files/figure-latex/unnamed-chunk-3-1.pdf>
+Package pdftex.def Info: bio_a_paper_final_files/figure-latex/unnamed-chunk-3-1
 .pdf  used on input line 377.
 (pdftex.def)             Requested size: 469.75067pt x 112.4046pt.
 [7pdfTeX warning (ext4): destination with the same identifier (name{table.1}) h
@@ -755,7 +755,7 @@ ation with the same identifier (name{table.2}) has been already used, duplicate
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.437 ...mial results}\label{multinomial-results}}
-                                                   <./bio_a_paper_draft_files/f
+                                                   <./bio_a_paper_final_files/f
 igure-latex/unnamed-chunk-3-1.pdf>] [9pdfTeX warning (ext4): destination with t
 he same identifier (name{table.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -766,11 +766,11 @@ l.521
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.521 
-      ] [10] [11] [12] [13] [14] [15] (./bio_a_paper_draft.aux)
+      ] [10] [11] [12] [13] [14] [15] (./bio_a_paper_final.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package rerunfilecheck Info: File `bio_a_paper_draft.out' has not changed.
+Package rerunfilecheck Info: File `bio_a_paper_final.out' has not changed.
 (rerunfilecheck)             Checksum: EC44EE08E9394B27CE020B743D7F806F;1524.
  ) 
 Here is how much of TeX's memory you used:
@@ -803,7 +803,7 @@ texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/theloniousgoerz/Library/TinyT
 eX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/theloniousgoerz/Library/Ti
 nyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/theloniousgoerz/Libra
 ry/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb>
-Output written on bio_a_paper_draft.pdf (15 pages, 250394 bytes).
+Output written on bio_a_paper_final.pdf (15 pages, 250394 bytes).
 PDF statistics:
  239 PDF objects out of 1000 (max. 8388607)
  195 compressed objects within 2 object streams
